@@ -1,7 +1,6 @@
 import Booking from '../models/Booking.js';
 import { getIsConnected } from '../config/db.js';
 
-// In-memory persistent fallback store for client demos if MongoDB daemon is offline
 let memoryBookings = [
   {
     _id: 'demo-b1',
@@ -11,21 +10,21 @@ let memoryBookings = [
     eventType: 'Wedding',
     eventDate: '2026-11-20',
     servicePackage: 'Wedding Film & Photo Classic',
-    budget: '$1,000 - $2,500',
-    message: 'Looking for full day coverage at Shangri-La Colombo. Ceremony starts at 9 AM.',
+    budget: 'LKR 375,000',
+    message: 'Looking for full day coverage in Gampaha. Ceremony starts at 9 AM.',
     status: 'Confirmed',
     createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
   },
   {
     _id: 'demo-b2',
     name: 'Shehan De Silva',
-    phone: '+94 71 987 6543',
+    phone: '+94 77 305 3014',
     email: 'shehan.ds@example.com',
     eventType: 'Commercial',
     eventDate: '2026-10-05',
     servicePackage: 'Ultimate Cinema & Drone Combo',
-    budget: '$2,500+',
-    message: 'Need dynamic tracking shots for luxury resort promotional video in Galle.',
+    budget: 'Above LKR 750,000',
+    message: 'Need dynamic tracking shots for luxury promotional video.',
     status: 'Pending',
     createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
   },
@@ -51,12 +50,13 @@ export const bookingService = {
   // Get all booking inquiries
   async getAllBookings() {
     if (getIsConnected()) {
-      return await Booking.find().sort({ createdAt: -1 });
+      const dbBookings = await Booking.find().sort({ createdAt: -1 });
+      if (dbBookings.length > 0) return dbBookings;
     }
     return memoryBookings;
   },
 
-  // Update booking status (Pending, Confirmed, Completed, Cancelled)
+  // Update booking status
   async updateBookingStatus(id, status) {
     if (getIsConnected()) {
       return await Booking.findByIdAndUpdate(id, { status }, { new: true });
