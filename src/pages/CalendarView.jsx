@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, CheckCircle2, XCircle, Clock, ArrowRight } from 'lucide-react';
+import { getApiUrl } from '../config/api';
 
 export default function CalendarView() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function CalendarView() {
   const fetchBookingsCalendar = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/bookings');
+      const res = await fetch(getApiUrl('/api/bookings'));
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         // Extract confirmed and pending dates

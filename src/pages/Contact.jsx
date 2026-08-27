@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Send, MessageSquare, Clock, CheckCircle2, AlertCircle, ShoppingBag } from 'lucide-react';
+import { getApiUrl } from '../config/api';
 
 export default function Contact() {
   const location = useLocation();

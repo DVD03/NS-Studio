@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShieldCheck, Lock, Search, Filter, Phone, Mail, Calendar, MessageSquare, Trash2, RefreshCw, Plus, Images, Video, CheckCircle2, AlertCircle } from 'lucide-react';
+import { getApiUrl } from '../config/api';
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,7 +66,7 @@ export default function Admin() {
   const fetchBookings = async () => {
     setLoadingBookings(true);
     try {
-      const res = await fetch('/api/bookings');
+      const res = await fetch(getApiUrl('/api/bookings'));
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         setBookings(json.data);
@@ -83,7 +84,7 @@ export default function Admin() {
   const fetchPortfolio = async () => {
     setLoadingPortfolio(true);
     try {
-      const res = await fetch('/api/portfolio');
+      const res = await fetch(getApiUrl('/api/portfolio'));
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         setPortfolioItems(json.data);
@@ -114,7 +115,7 @@ export default function Admin() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await fetch(`/api/bookings/${id}/status`, {
+      await fetch(getApiUrl(`/api/bookings/${id}/status`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
@@ -128,7 +129,7 @@ export default function Admin() {
   const handleDeleteBooking = async (id) => {
     if (!window.confirm('Are you sure you want to delete this booking inquiry?')) return;
     try {
-      await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      await fetch(getApiUrl(`/api/bookings/${id}`), { method: 'DELETE' });
       setBookings(prev => prev.filter(b => b._id !== id));
     } catch (err) {
       setBookings(prev => prev.filter(b => b._id !== id));
@@ -187,7 +188,7 @@ export default function Admin() {
     };
 
     try {
-      const res = await fetch('/api/portfolio', {
+      const res = await fetch(getApiUrl('/api/portfolio'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -221,7 +222,7 @@ export default function Admin() {
   const handleDeleteAlbum = async (id) => {
     if (!window.confirm('Are you sure you want to delete this album item?')) return;
     try {
-      await fetch(`/api/portfolio/${id}`, { method: 'DELETE' });
+      await fetch(getApiUrl(`/api/portfolio/${id}`), { method: 'DELETE' });
       setPortfolioItems(prev => prev.filter(p => p._id !== id));
     } catch (err) {
       setPortfolioItems(prev => prev.filter(p => p._id !== id));

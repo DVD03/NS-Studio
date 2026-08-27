@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Camera, Video, Play, X, ChevronLeft, ChevronRight, Images } from 'lucide-react';
+import { getApiUrl } from '../config/api';
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -59,7 +60,7 @@ export default function Portfolio() {
   const fetchPortfolio = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/portfolio');
+      const res = await fetch(getApiUrl('/api/portfolio'));
       const json = await res.json();
       if (json.success && Array.isArray(json.data) && json.data.length > 0) {
         setPortfolioItems(json.data);

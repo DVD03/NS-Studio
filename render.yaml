@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ns-studio-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: PORT
+        value: 5000
