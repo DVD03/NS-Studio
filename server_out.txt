@@ -1,0 +1,4 @@
+Ôùç injected env (0) from .env // tip: Ôîÿ enable debugging { debug: true }
+Ôùç injected env (0) from .env // tip: Ôîü auth for agents [www.vestauth.com]
+[Express Backend] Server running on http://localhost:5000
+[MongoDB Warning] Could not connect to Atlas URI (connect ECONNREFUSED 127.0.0.1:27017). Operating in resilient mode.

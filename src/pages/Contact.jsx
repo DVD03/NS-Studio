@@ -15,6 +15,10 @@ export default function Contact() {
     eventDate: '',
     servicePackage: passedState.selectedPackage || 'Wedding Film & Photo Classic',
     budget: passedState.totalEstimatedPrice || 'LKR 375,000',
+    startHourMinute: '',
+    startAmPm: 'AM',
+    endHourMinute: '',
+    endAmPm: 'PM',
     message: passedState.selectedAddOns?.length
       ? `Selected Add-Ons: ${passedState.selectedAddOns.join(', ')}. Estimated Total: ${passedState.totalEstimatedPrice}.`
       : '',
@@ -44,10 +48,14 @@ export default function Contact() {
     setErrorMsg('');
 
     try {
+      const formattedTimeSlot = `${formData.startHourMinute} ${formData.startAmPm} - ${formData.endHourMinute} ${formData.endAmPm}`;
+      
+      const payload = { ...formData, timeSlot: formattedTimeSlot };
+
       const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -60,6 +68,10 @@ export default function Contact() {
           email: '',
           eventType: 'Wedding',
           eventDate: '',
+          startHourMinute: '',
+          startAmPm: 'AM',
+          endHourMinute: '',
+          endAmPm: 'PM',
           servicePackage: 'Wedding Film & Photo Classic',
           budget: 'LKR 375,000',
           message: '',
@@ -92,7 +104,7 @@ export default function Contact() {
       
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+        <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
           Get in Touch
         </span>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-white font-serif">
@@ -103,8 +115,8 @@ export default function Contact() {
         </p>
 
         {passedState.selectedPackage && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono">
-            <ShoppingBag className="w-4 h-4 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-primary/10 border border-brand-primary/30 text-brand-primary/80 text-xs font-mono">
+            <ShoppingBag className="w-4 h-4 text-brand-primary" />
             <span>Pre-loaded from Services: {passedState.selectedPackage} ({passedState.totalEstimatedPrice})</span>
           </div>
         )}
@@ -118,9 +130,9 @@ export default function Contact() {
           <div className="lg:col-span-5 space-y-8">
             
             {/* WhatsApp Launcher Box */}
-            <div className="bg-gradient-to-br from-emerald-950/80 to-neutral-900 border border-emerald-500/30 p-6 sm:p-8 rounded-3xl space-y-4 shadow-xl">
+            <div className="bg-gradient-to-br from-emerald-950/80 to-neutral-900 border border-brand-secondary/30 p-6 sm:p-8 rounded-3xl space-y-4 shadow-xl">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-brand-secondary/20 text-brand-secondary/90 border border-brand-secondary/30 flex items-center justify-center">
                   <MessageSquare className="w-6 h-6 fill-current" />
                 </div>
                 <div>
@@ -137,7 +149,7 @@ export default function Contact() {
                 href={directWhatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+                className="w-full flex items-center justify-center gap-2 bg-brand-secondary hover:bg-brand-secondary/90 text-neutral-950 font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-brand-secondary/20 active:scale-95"
               >
                 <MessageSquare className="w-4 h-4 fill-neutral-950" />
                 <span>Chat on WhatsApp (+94 77 305 3014)</span>
@@ -156,7 +168,7 @@ export default function Contact() {
                     href={directWhatsappUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 hover:bg-emerald-500 hover:text-neutral-950 transition-colors"
+                    className="w-10 h-10 rounded-xl bg-brand-secondary/10 border border-brand-secondary/20 text-brand-secondary/90 flex items-center justify-center shrink-0 hover:bg-brand-secondary hover:text-neutral-950 transition-colors"
                   >
                     <MessageSquare className="w-5 h-5 fill-current" />
                   </a>
@@ -166,7 +178,7 @@ export default function Contact() {
                       href={directWhatsappUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+                      className="text-sm font-semibold text-brand-primary hover:text-brand-primary/80 transition-colors"
                     >
                       +94 77 305 3014
                     </a>
@@ -174,14 +186,14 @@ export default function Contact() {
                 </li>
 
                 <li className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 text-brand-primary flex items-center justify-center shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="text-xs text-neutral-500 block uppercase font-mono">Email Address *</span>
                     <a
                       href="mailto:ntstudiogampaha@gmail.com"
-                      className="text-sm font-semibold text-white hover:text-amber-400 transition-colors break-all"
+                      className="text-sm font-semibold text-white hover:text-brand-primary transition-colors break-all"
                     >
                       ntstudiogampaha@gmail.com
                     </a>
@@ -189,7 +201,7 @@ export default function Contact() {
                 </li>
 
                 <li className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 text-brand-primary flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
@@ -201,7 +213,7 @@ export default function Contact() {
                 </li>
 
                 <li className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 text-brand-primary flex items-center justify-center shrink-0">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
@@ -225,8 +237,8 @@ export default function Contact() {
             </div>
 
             {submitted && (
-              <div className="bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 p-4 rounded-2xl flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+              <div className="bg-emerald-950/90 border border-brand-secondary/50 text-emerald-200 p-4 rounded-2xl flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-brand-secondary/90 shrink-0" />
                 <div className="text-xs sm:text-sm">
                   Thank you! Your booking request has been saved into MongoDB. View it in the Admin Dashboard!
                 </div>
@@ -254,7 +266,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter your name"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
                 </div>
 
@@ -269,7 +281,7 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+94 77 305 3014"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
                 </div>
               </div>
@@ -286,7 +298,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="ntstudiogampaha@gmail.com"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
                 </div>
 
@@ -300,8 +312,58 @@ export default function Contact() {
                     required
                     value={formData.eventDate}
                     onChange={handleChange}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider font-mono">
+                    Event Time (From - To) *
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <div className="flex w-full">
+                      <input
+                        type="text"
+                        name="startHourMinute"
+                        required
+                        placeholder="HH:MM"
+                        value={formData.startHourMinute}
+                        onChange={handleChange}
+                        className="w-full bg-neutral-950 border border-neutral-800 rounded-l-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors border-r-0"
+                      />
+                      <select
+                        name="startAmPm"
+                        value={formData.startAmPm}
+                        onChange={handleChange}
+                        className="bg-neutral-900 border border-neutral-800 rounded-r-xl px-2 py-3 text-sm text-brand-primary focus:outline-none transition-colors"
+                      >
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                      </select>
+                    </div>
+                    
+                    <span className="text-neutral-500 font-bold">-</span>
+                    
+                    <div className="flex w-full">
+                      <input
+                        type="text"
+                        name="endHourMinute"
+                        required
+                        placeholder="HH:MM"
+                        value={formData.endHourMinute}
+                        onChange={handleChange}
+                        className="w-full bg-neutral-950 border border-neutral-800 rounded-l-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors border-r-0"
+                      />
+                      <select
+                        name="endAmPm"
+                        value={formData.endAmPm}
+                        onChange={handleChange}
+                        className="bg-neutral-900 border border-neutral-800 rounded-r-xl px-2 py-3 text-sm text-brand-primary focus:outline-none transition-colors"
+                      >
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -315,7 +377,7 @@ export default function Contact() {
                     name="servicePackage"
                     value={formData.servicePackage}
                     onChange={handleChange}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
                 </div>
 
@@ -328,7 +390,7 @@ export default function Contact() {
                     name="budget"
                     value={formData.budget}
                     onChange={handleChange}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                   />
                 </div>
               </div>
@@ -343,14 +405,14 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us about your venue location, estimated duration, or special requests..."
-                  className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-colors"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold py-4 rounded-xl text-base transition-all shadow-lg shadow-amber-500/20 active:scale-95 disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold py-4 rounded-xl text-base transition-all shadow-lg shadow-brand-primary/20 active:scale-95 disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
                 <span>{loading ? 'Submitting to Database...' : 'Submit Reservation Request'}</span>

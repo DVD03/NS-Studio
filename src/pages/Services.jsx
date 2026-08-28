@@ -164,7 +164,7 @@ export default function Services() {
       
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+        <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
           Investment & Coverage
         </span>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-white font-serif">
@@ -195,12 +195,12 @@ export default function Services() {
                 onClick={() => setSelectedPackage(pkg.name)}
                 className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-neutral-900 border-2 border-amber-400 shadow-2xl shadow-amber-500/20 scale-102'
+                    ? 'bg-neutral-900 border-2 border-brand-primary shadow-2xl shadow-brand-primary/20 scale-102'
                     : 'bg-neutral-900/60 border border-neutral-800 hover:border-neutral-700'
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-amber-500 text-neutral-950 font-bold text-xs uppercase tracking-widest flex items-center shadow-md">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand-primary text-neutral-950 font-bold text-xs uppercase tracking-widest flex items-center shadow-md">
                     <span>Most Popular Choice</span>
                   </div>
                 )}
@@ -210,7 +210,7 @@ export default function Services() {
                     <div className="flex items-center justify-between">
                       <h3 className="text-2xl font-bold text-white font-serif">{pkg.name}</h3>
                       {isSelected && (
-                        <span className="px-2.5 py-1 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-400 font-mono text-xs font-bold">
+                        <span className="px-2.5 py-1 rounded-md bg-brand-primary/20 border border-brand-primary/40 text-brand-primary font-mono text-xs font-bold">
                           Selected
                         </span>
                       )}
@@ -220,7 +220,7 @@ export default function Services() {
 
                   <div className="border-y border-neutral-800 py-4 space-y-1">
                     {/* Primary Display Price (LKR by default) */}
-                    <div className="text-3xl sm:text-4xl font-extrabold text-amber-400 font-serif">
+                    <div className="text-3xl sm:text-4xl font-extrabold text-brand-primary font-serif">
                       {displayMainPrice}
                     </div>
                     {/* Secondary Converted Reference Price */}
@@ -233,7 +233,7 @@ export default function Services() {
                   <ul className="space-y-3">
                     {pkg.features.map((feat, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-3 text-xs sm:text-sm text-neutral-300">
-                        <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <Check className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -249,7 +249,7 @@ export default function Services() {
                     }}
                     className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-bold transition-colors ${
                       isSelected
-                        ? 'bg-amber-500 text-neutral-950 shadow-md'
+                        ? 'bg-brand-primary text-neutral-950 shadow-md'
                         : 'bg-neutral-800 hover:bg-neutral-700 text-white'
                     }`}
                   >
@@ -266,7 +266,7 @@ export default function Services() {
       {/* Custom Add-ons Section - Interactive Selection */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="space-y-2 text-center max-w-xl mx-auto">
-          <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+          <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
             Custom Enhancements
           </span>
           <h2 className="text-3xl font-bold text-white font-serif">Select Custom Add-On Services</h2>
@@ -284,7 +284,7 @@ export default function Services() {
                 onClick={() => toggleAddOn(addon)}
                 className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-4 ${
                   isAdded
-                    ? 'bg-neutral-900 border-2 border-amber-400 shadow-xl shadow-amber-500/10'
+                    ? 'bg-neutral-900 border-2 border-brand-primary shadow-xl shadow-brand-primary/10'
                     : 'bg-neutral-900/60 border-neutral-800 hover:border-neutral-700'
                 }`}
               >
@@ -295,7 +295,7 @@ export default function Services() {
                     </h4>
                     <p className="text-xs text-neutral-400">{addon.desc}</p>
                   </div>
-                  <div className="text-sm font-bold text-amber-400 font-mono shrink-0">
+                  <div className="text-sm font-bold text-brand-primary font-mono shrink-0">
                     {displayAddonPrice}
                   </div>
                 </div>
@@ -313,7 +313,7 @@ export default function Services() {
                     }}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${
                       isAdded
-                        ? 'bg-amber-500 text-neutral-950'
+                        ? 'bg-brand-primary text-neutral-950'
                         : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'
                     }`}
                   >
@@ -324,7 +324,7 @@ export default function Services() {
                       </>
                     ) : (
                       <>
-                        <Plus className="w-3.5 h-3.5 text-amber-400" />
+                        <Plus className="w-3.5 h-3.5 text-brand-primary" />
                         <span>Add Service</span>
                       </>
                     )}
@@ -338,18 +338,18 @@ export default function Services() {
 
       {/* Floating / Sticky Total Summary Bar & Proceed Button */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 border-2 border-amber-500/50 p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 border-2 border-brand-primary/50 p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
           <div className="space-y-2 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2">
-              <ShoppingBag className="w-5 h-5 text-amber-400" />
-              <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+              <ShoppingBag className="w-5 h-5 text-brand-primary" />
+              <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
                 Booking Estimate Summary
               </span>
             </div>
 
             <div className="space-y-1">
               <div className="text-sm font-semibold text-white">
-                Base Package: <span className="text-amber-300 font-bold">{selectedPackage}</span>
+                Base Package: <span className="text-brand-primary/80 font-bold">{selectedPackage}</span>
               </div>
               <div className="text-xs text-neutral-400">
                 Add-Ons ({selectedAddOns.length}):{' '}
@@ -363,7 +363,7 @@ export default function Services() {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             <div className="text-center md:text-right space-y-0.5">
               <span className="text-[10px] text-neutral-400 uppercase font-mono block">Estimated Total</span>
-              <div className="text-2xl sm:text-3xl font-extrabold text-amber-400 font-serif">
+              <div className="text-2xl sm:text-3xl font-extrabold text-brand-primary font-serif">
                 {formattedTotal}
               </div>
             </div>
@@ -371,7 +371,7 @@ export default function Services() {
             <button
               type="button"
               onClick={handleProceedToBooking}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-7 py-4 rounded-2xl text-sm transition-colors shadow-lg shadow-amber-500/20 active:scale-95"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-7 py-4 rounded-2xl text-sm transition-colors shadow-lg shadow-brand-primary/20 active:scale-95"
             >
               <span>Proceed to Booking</span>
               <ArrowRight className="w-4 h-4" />
@@ -384,7 +384,7 @@ export default function Services() {
       <section className="bg-neutral-900/30 border-t border-neutral-800/60 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center space-y-2">
-            <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+            <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
               Common Inquiries
             </span>
             <h2 className="text-3xl font-bold text-white font-serif">Frequently Asked Questions</h2>
@@ -394,7 +394,7 @@ export default function Services() {
             {faqs.map((faq, fIdx) => (
               <div key={fIdx} className="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl space-y-2">
                 <div className="flex items-center gap-2 text-white font-bold text-base font-serif">
-                  <HelpCircle className="w-5 h-5 text-amber-400 shrink-0" />
+                  <HelpCircle className="w-5 h-5 text-brand-primary shrink-0" />
                   <span>{faq.q}</span>
                 </div>
                 <p className="text-xs sm:text-sm text-neutral-400 pl-7 leading-relaxed">{faq.a}</p>

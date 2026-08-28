@@ -40,15 +40,15 @@ export default function InvoiceModal({ invoice, onClose }) {
         {/* Top Control Bar (Hidden when printing) */}
         <div className="bg-neutral-900 text-white px-6 py-4 flex items-center justify-between print:hidden">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-400">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-brand-primary">
               Invoice #{invoice.invoiceNumber || 'INV-026'}
             </span>
             <span
               className={`px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase ${
                 invoice.paymentStatus === 'Paid'
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                  ? 'bg-brand-secondary/20 text-brand-secondary/90 border border-brand-secondary/30'
                   : invoice.paymentStatus === 'Partially Paid'
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  ? 'bg-brand-primary/20 text-brand-primary border border-brand-primary/30'
                   : 'bg-red-500/20 text-red-400 border border-red-500/30'
               }`}
             >
@@ -59,7 +59,7 @@ export default function InvoiceModal({ invoice, onClose }) {
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrint}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-brand-primary hover:bg-brand-primary text-neutral-950 text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
             >
               <Printer className="w-4 h-4" />
               <span>Print / Save PDF</span>
@@ -67,7 +67,7 @@ export default function InvoiceModal({ invoice, onClose }) {
 
             <button
               onClick={handleWhatsAppShare}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-brand-secondary text-white text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
             >
               <Share2 className="w-4 h-4" />
               <span>Share WhatsApp</span>
@@ -88,22 +88,22 @@ export default function InvoiceModal({ invoice, onClose }) {
           {/* Header Row: Logo & Invoice Title */}
           <div className="flex items-start justify-between border-b border-neutral-200 pb-8">
             {/* Left: Studio Logo & Address */}
-            <div className="space-y-3">
-              <img src="/logo.png" alt="NS STUDIO Logo" className="h-16 w-auto object-contain" />
-              <div>
-                <h2 className="text-xl font-bold font-serif text-neutral-900 tracking-wider">NS STUDIO</h2>
-                <p className="text-xs text-neutral-600 font-mono">SriLanka</p>
-                <p className="text-xs text-neutral-600 font-mono">ntstudiogampaha@gmail.com</p>
+            <div className="space-y-5">
+              <img src="/logo.png" alt="NT STUDIO Logo" className="h-36 w-auto object-contain" />
+              <div className="space-y-0.5">
+                <h2 className="text-sm font-bold font-sans text-neutral-900">NT STUDIO</h2>
+                <p className="text-sm text-neutral-600 font-sans">SriLanka</p>
+                <p className="text-sm text-neutral-600 font-sans">tharindu.6273@gmail.com</p>
               </div>
             </div>
 
             {/* Right: Invoice # & Balance Due */}
-            <div className="text-right space-y-2">
-              <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 font-serif">INVOICE</h1>
-              <p className="text-sm font-bold text-neutral-600 font-mono"># {invoice.invoiceNumber || 'INV-026'}</p>
-              <div className="pt-2">
-                <span className="text-xs text-neutral-500 uppercase tracking-wider block font-mono">Balance Due</span>
-                <span className="text-2xl font-bold text-neutral-900 font-mono">
+            <div className="text-right space-y-2 pt-4">
+              <h1 className="text-4xl font-normal tracking-tight text-neutral-900 font-sans">INVOICE</h1>
+              <p className="text-sm font-bold text-neutral-600 font-sans"># {invoice.invoiceNumber || 'INV-026'}</p>
+              <div className="pt-4">
+                <span className="text-xs text-neutral-900 font-bold block font-sans">Balance Due</span>
+                <span className="text-xl font-bold text-neutral-900 font-sans">
                   LKR{balanceDue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -111,50 +111,49 @@ export default function InvoiceModal({ invoice, onClose }) {
           </div>
 
           {/* Meta Information Grid */}
-          <div className="grid grid-cols-2 gap-6 text-sm border-b border-neutral-200 pb-6">
-            <div>
-              <span className="text-xs text-neutral-500 font-mono uppercase block">Billed To:</span>
-              <h3 className="text-lg font-bold text-neutral-900 font-serif">{invoice.clientName || 'Kasun Malaka'}</h3>
-              {invoice.clientPhone && <p className="text-xs text-neutral-600 font-mono">{invoice.clientPhone}</p>}
-              {invoice.clientEmail && <p className="text-xs text-neutral-600 font-mono">{invoice.clientEmail}</p>}
+          <div className="grid grid-cols-2 gap-6 text-sm border-b border-neutral-200 pb-6 pt-2">
+            <div className="pt-6">
+              <h3 className="text-sm font-bold text-neutral-900 font-sans">{invoice.clientName || 'Kasun Malaka'}</h3>
+              {invoice.clientPhone && <p className="text-sm text-neutral-600 font-sans">{invoice.clientPhone}</p>}
+              {invoice.clientEmail && <p className="text-sm text-neutral-600 font-sans">{invoice.clientEmail}</p>}
             </div>
 
-            <div className="text-right space-y-1.5 font-mono text-xs text-neutral-700">
-              <div className="flex justify-end gap-3">
+            <div className="text-right space-y-2 font-sans text-sm text-neutral-700">
+              <div className="flex justify-end gap-8">
                 <span className="text-neutral-500">Invoice Date :</span>
-                <span className="font-bold text-neutral-900">{formattedInvoiceDate}</span>
+                <span className="text-neutral-900 w-32">{formattedInvoiceDate}</span>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-8">
                 <span className="text-neutral-500">Terms :</span>
-                <span className="font-bold text-neutral-900">{terms}</span>
+                <span className="text-neutral-900 w-32">{terms}</span>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-8">
                 <span className="text-neutral-500">Due Date :</span>
-                <span className="font-bold text-neutral-900">{formattedDueDate}</span>
+                <span className="text-neutral-900 w-32">{formattedDueDate}</span>
               </div>
             </div>
           </div>
 
           {/* Items Table (Strictly matching sample invoice image layout) */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono border-collapse">
+          <div className="overflow-x-auto pt-2">
+            <table className="w-full text-left text-sm font-sans border-collapse">
               <thead>
-                <tr className="bg-neutral-800 text-white uppercase text-[11px] tracking-wider">
-                  <th className="py-3 px-4 w-12 text-center">#</th>
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-4 text-center w-20">Qty</th>
-                  <th className="py-3 px-4 text-right w-28">Rate</th>
-                  <th className="py-3 px-4 text-right w-32">Amount</th>
+                <tr className="bg-[#333333] text-white">
+                  <th className="py-2.5 px-4 w-12 text-center font-normal">#</th>
+                  <th className="py-2.5 px-4 font-normal">Description</th>
+                  <th className="py-2.5 px-4 text-center w-24 font-normal">Qty</th>
+                  <th className="py-2.5 px-4 text-right w-32 font-normal">Rate</th>
+                  <th className="py-2.5 px-4 text-right w-36 font-normal">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-200 text-neutral-800">
+              <tbody className="divide-y divide-neutral-200 text-neutral-800 text-[13px]">
                 {items.map((item, idx) => (
                   <tr key={idx} className="hover:bg-neutral-50">
-                    <td className="py-3 px-4 text-center font-bold text-neutral-500">{idx + 1}</td>
-                    <td className="py-3 px-4 font-medium text-neutral-900">{item.description}</td>
-                    <td className="py-3 px-4 text-center">{Number(item.qty).toFixed(2)}</td>
-                    <td className="py-3 px-4 text-right">{Number(item.rate).toFixed(2)}</td>
-                    <td className="py-3 px-4 text-right font-bold text-neutral-900">{Number(item.amount).toFixed(2)}</td>
+                    <td className="py-3.5 px-4 text-center text-neutral-600">{idx + 1}</td>
+                    <td className="py-3.5 px-4 text-neutral-900">{item.description}</td>
+                    <td className="py-3.5 px-4 text-center">{Number(item.qty).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td className="py-3.5 px-4 text-right">{Number(item.rate).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td className="py-3.5 px-4 text-right text-neutral-900">{Number(item.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
                   </tr>
                 ))}
               </tbody>
@@ -162,19 +161,19 @@ export default function InvoiceModal({ invoice, onClose }) {
           </div>
 
           {/* Subtotal & Totals Summary */}
-          <div className="flex justify-end pt-4">
-            <div className="w-72 space-y-3 font-mono text-xs">
-              <div className="flex justify-between text-neutral-600">
+          <div className="flex justify-end pt-2">
+            <div className="w-80 space-y-4 font-sans text-sm">
+              <div className="flex justify-between text-neutral-700 px-4">
                 <span>Sub Total</span>
                 <span>{subTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
 
-              <div className="flex justify-between text-sm font-bold text-neutral-900 border-t border-neutral-200 pt-2">
+              <div className="flex justify-between font-bold text-neutral-900 px-4">
                 <span>Total</span>
                 <span>LKR{total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
 
-              <div className="flex justify-between bg-neutral-100 p-3 rounded-lg font-bold text-neutral-900 text-sm">
+              <div className="flex justify-between bg-neutral-100 p-4 font-bold text-neutral-900">
                 <span>Balance Due</span>
                 <span>LKR{balanceDue.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>

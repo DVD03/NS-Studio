@@ -12,12 +12,12 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(false);
 
   const filterTabs = [
-    { label: 'All', color: 'from-amber-500 to-orange-500' },
+    { label: 'All', color: 'from-brand-primary to-orange-500' },
     { label: 'Weddings', color: 'from-rose-500 to-pink-500' },
     { label: 'Portraits', color: 'from-violet-500 to-purple-500' },
     { label: 'Cinematic Films', color: 'from-cyan-500 to-blue-500' },
     { label: 'Drone Aerial', color: 'from-teal-500 to-green-500' },
-    { label: 'Commercials', color: 'from-amber-500 to-yellow-500' },
+    { label: 'Commercials', color: 'from-brand-primary to-yellow-500' },
   ];
 
   const defaultItems = [
@@ -130,7 +130,7 @@ export default function Portfolio() {
               onClick={() => setActiveFilter(tab.label)}
               className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-colors shrink-0 ${
                 activeFilter === tab.label
-                  ? 'bg-amber-500 text-neutral-950 font-bold'
+                  ? 'bg-brand-primary text-neutral-950 font-bold'
                   : 'bg-neutral-900 border border-neutral-800 text-neutral-300 hover:bg-neutral-800 hover:text-white'
               }`}
             >
@@ -156,7 +156,7 @@ export default function Portfolio() {
                     if (item.type === 'photo') openAlbumModal(item);
                     if (item.type === 'video') setSelectedVideo(item);
                   }}
-                  className="group cursor-pointer rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 hover:border-amber-500/40 hover-lift transition-all duration-300"
+                  className="group cursor-pointer rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 hover:border-brand-primary/40 hover-lift transition-all duration-300"
                 >
                   {/* Image Card Container */}
                   <div className="aspect-[4/3] relative overflow-hidden bg-neutral-950">
@@ -169,14 +169,14 @@ export default function Portfolio() {
 
                     {/* Category badge Top Left */}
                     <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full glass border border-white/10 text-white text-xs font-semibold">
-                      {item.type === 'video' ? <Video className="w-3.5 h-3.5 text-cyan-400" /> : <Camera className="w-3.5 h-3.5 text-amber-400" />}
+                      {item.type === 'video' ? <Video className="w-3.5 h-3.5 text-cyan-400" /> : <Camera className="w-3.5 h-3.5 text-brand-primary" />}
                       <span>{item.category}</span>
                     </div>
 
                     {/* Multi-Photo Count Badge Top Right */}
                     {item.type === 'photo' && (
-                      <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-950/90 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold shadow-lg">
-                        <Images className="w-3.5 h-3.5 text-amber-400" />
+                      <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-950/90 border border-brand-primary/40 text-brand-primary/80 text-xs font-mono font-bold shadow-lg">
+                        <Images className="w-3.5 h-3.5 text-brand-primary" />
                         <span>{imageCount} {imageCount === 1 ? 'Photo' : 'Photos'}</span>
                       </div>
                     )}
@@ -188,8 +188,8 @@ export default function Portfolio() {
                           <Play className="w-7 h-7 fill-white text-white ml-1" />
                         </div>
                       ) : (
-                        <div className="px-4 py-2 rounded-xl bg-neutral-950/90 border border-amber-400 text-amber-300 text-xs font-bold font-mono flex items-center gap-2 shadow-xl">
-                          <Images className="w-4 h-4 text-amber-400" />
+                        <div className="px-4 py-2 rounded-xl bg-neutral-950/90 border border-brand-primary text-brand-primary/80 text-xs font-bold font-mono flex items-center gap-2 shadow-xl">
+                          <Images className="w-4 h-4 text-brand-primary" />
                           <span>View Full Album</span>
                         </div>
                       )}
@@ -198,7 +198,7 @@ export default function Portfolio() {
 
                   {/* Title & Info */}
                   <div className="p-5 space-y-1">
-                    <h3 className="text-lg font-bold text-white group-hover:text-amber-300 transition-colors font-serif">{item.title}</h3>
+                    <h3 className="text-lg font-bold text-white group-hover:text-brand-primary/80 transition-colors font-serif">{item.title}</h3>
                     <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">{item.details}</p>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function Portfolio() {
                 {albumImages.length > 1 && (
                   <button
                     onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 border border-neutral-700 text-white hover:text-amber-400 hover:border-amber-400 transition-all shadow-xl"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 border border-neutral-700 text-white hover:text-brand-primary hover:border-brand-primary transition-all shadow-xl"
                     title="Previous Photo"
                   >
                     <ChevronLeft className="w-6 h-6" />
@@ -249,7 +249,7 @@ export default function Portfolio() {
                 {albumImages.length > 1 && (
                   <button
                     onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 border border-neutral-700 text-white hover:text-amber-400 hover:border-amber-400 transition-all shadow-xl"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 border border-neutral-700 text-white hover:text-brand-primary hover:border-brand-primary transition-all shadow-xl"
                     title="Next Photo"
                   >
                     <ChevronRight className="w-6 h-6" />
@@ -257,7 +257,7 @@ export default function Portfolio() {
                 )}
 
                 {/* Photo Index Counter Badge */}
-                <div className="absolute bottom-3 left-4 px-3 py-1 rounded-full bg-neutral-950/80 border border-neutral-800 text-amber-400 text-xs font-mono font-bold shadow-lg">
+                <div className="absolute bottom-3 left-4 px-3 py-1 rounded-full bg-neutral-950/80 border border-neutral-800 text-brand-primary text-xs font-mono font-bold shadow-lg">
                   Photo {currentImageIndex + 1} of {albumImages.length}
                 </div>
               </div>
@@ -271,7 +271,7 @@ export default function Portfolio() {
                       onClick={() => setCurrentImageIndex(idx)}
                       className={`relative w-16 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
                         currentImageIndex === idx
-                          ? 'border-amber-400 scale-105 shadow-md'
+                          ? 'border-brand-primary scale-105 shadow-md'
                           : 'border-neutral-800 opacity-60 hover:opacity-100'
                       }`}
                     >
@@ -283,7 +283,7 @@ export default function Portfolio() {
 
               {/* Album Info */}
               <div className="space-y-1 px-2">
-                <span className="text-xs font-semibold text-amber-400 uppercase tracking-widest font-mono">{selectedAlbum.category} Album</span>
+                <span className="text-xs font-semibold text-brand-primary uppercase tracking-widest font-mono">{selectedAlbum.category} Album</span>
                 <h3 className="text-xl sm:text-2xl font-bold text-white font-serif">{selectedAlbum.title}</h3>
                 <p className="text-sm text-neutral-400">{selectedAlbum.details}</p>
               </div>

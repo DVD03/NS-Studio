@@ -5,12 +5,12 @@ import {
   FileText, DollarSign, Palette, Type, UserCheck, AlertTriangle, Printer, Share2
 } from 'lucide-react';
 import { getApiUrl } from '../config/api';
-import { useTheme, colorThemes, fontStyles } from '../context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 import InvoiceModal from '../components/InvoiceModal';
 import ClientLookupModal from '../components/ClientLookupModal';
 
 export default function Admin() {
-  const { currentThemeKey, currentFontKey, setTheme, setFont } = useTheme();
+  const { themeSettings, updateTheme } = useTheme();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinInput, setPinInput] = useState('');
@@ -249,6 +249,34 @@ export default function Admin() {
     }
   };
 
+  // Update Invoice Payment Amount
+  const handleUpdateInvoicePayment = async (id, currentPaidAmount) => {
+    const newPaidAmount = prompt('Enter the new total PAID amount for this invoice (LKR):', currentPaidAmount || 0);
+    if (newPaidAmount === null || newPaidAmount.trim() === '') return;
+    
+    const parsedAmount = Number(newPaidAmount);
+    if (isNaN(parsedAmount)) {
+      alert('Invalid amount entered.');
+      return;
+    }
+
+    try {
+      const res = await fetch(getApiUrl(`/api/invoices/${id}/payment`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paidAmount: parsedAmount }),
+      });
+      const json = await res.json();
+      if (res.ok && json.success) {
+        setInvoices(prev => prev.map(inv => inv._id === id ? json.data : inv));
+      } else {
+        alert(json.message || 'Failed to update payment.');
+      }
+    } catch (err) {
+      alert('Server communication error.');
+    }
+  };
+
   // Multiple File Upload Handler for Portfolio
   const handleMultipleFilesChange = (e) => {
     const files = Array.from(e.target.files);
@@ -280,13 +308,23 @@ export default function Admin() {
     setAlbumSuccess('');
     setAlbumError('');
 
+    const convertDriveLink = (url) => {
+      const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (fileMatch && fileMatch[1]) return `https://drive.google.com/uc?export=view&id=${fileMatch[1]}`;
+      const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (idMatch && idMatch[1]) return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+      return url;
+    };
+
     const parsedUrls = rawImagesInput
       .split('\n')
       .map((url) => url.trim())
-      .filter((url) => url.length > 0);
+      .filter((url) => url.length > 0)
+      .map(convertDriveLink);
 
     const finalImages = Array.from(new Set([...albumForm.images, ...parsedUrls]));
-    const coverImg = albumForm.image || finalImages[0];
+    let coverImg = albumForm.image || finalImages[0];
+    if (coverImg) coverImg = convertDriveLink(coverImg);
 
     if (!albumForm.title || !coverImg) {
       setAlbumError('Album title and at least one image/cover URL are required.');
@@ -372,7 +410,7 @@ export default function Admin() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-16">
         <div className="max-w-md w-full bg-neutral-900 border border-neutral-800 p-8 rounded-3xl shadow-2xl space-y-6 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 border border-brand-primary/30 text-brand-primary flex items-center justify-center mx-auto">
             <ShieldCheck className="w-8 h-8" />
           </div>
 
@@ -389,7 +427,7 @@ export default function Admin() {
                 placeholder="Security PIN (Default: 1234)"
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
-                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-mono text-center tracking-widest"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary font-mono text-center tracking-widest"
               />
             </div>
 
@@ -397,7 +435,7 @@ export default function Admin() {
 
             <button
               type="submit"
-              className="w-full bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors font-mono"
+              className="w-full bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors font-mono"
             >
               Access Dashboard
             </button>
@@ -414,7 +452,7 @@ export default function Admin() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
         <div>
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-7 h-7 text-amber-400" />
+            <ShieldCheck className="w-7 h-7 text-brand-primary" />
             <h1 className="text-3xl font-extrabold text-white font-serif">NS Studio Admin Portal</h1>
           </div>
           <p className="text-xs text-neutral-400 font-mono mt-1">
@@ -453,7 +491,7 @@ export default function Admin() {
           onClick={() => setActiveTab('bookings')}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold font-mono transition-colors flex items-center gap-2 ${
             activeTab === 'bookings'
-              ? 'bg-amber-500 text-neutral-950'
+              ? 'bg-brand-primary text-neutral-950'
               : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
           }`}
         >
@@ -468,7 +506,7 @@ export default function Admin() {
           }}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold font-mono transition-colors flex items-center gap-2 ${
             activeTab === 'lookup'
-              ? 'bg-amber-500 text-neutral-950'
+              ? 'bg-brand-primary text-neutral-950'
               : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
           }`}
         >
@@ -480,7 +518,7 @@ export default function Admin() {
           onClick={() => setActiveTab('invoices')}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold font-mono transition-colors flex items-center gap-2 ${
             activeTab === 'invoices'
-              ? 'bg-amber-500 text-neutral-950'
+              ? 'bg-brand-primary text-neutral-950'
               : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
           }`}
         >
@@ -492,7 +530,7 @@ export default function Admin() {
           onClick={() => setActiveTab('portfolio')}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold font-mono transition-colors flex items-center gap-2 ${
             activeTab === 'portfolio'
-              ? 'bg-amber-500 text-neutral-950'
+              ? 'bg-brand-primary text-neutral-950'
               : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
           }`}
         >
@@ -504,7 +542,7 @@ export default function Admin() {
           onClick={() => setActiveTab('theme')}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold font-mono transition-colors flex items-center gap-2 ${
             activeTab === 'theme'
-              ? 'bg-amber-500 text-neutral-950'
+              ? 'bg-brand-primary text-neutral-950'
               : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
           }`}
         >
@@ -525,7 +563,7 @@ export default function Admin() {
                 placeholder="Search client name or phone..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-primary font-mono"
               />
             </div>
 
@@ -534,7 +572,7 @@ export default function Admin() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-400 font-mono w-full sm:w-auto"
+                className="bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-brand-primary font-mono w-full sm:w-auto"
               >
                 <option value="All">All Statuses</option>
                 <option value="Pending">Pending</option>
@@ -576,14 +614,14 @@ export default function Admin() {
                         <td className="py-4 px-5 space-y-1">
                           <div className="font-bold text-white text-sm font-serif">{b.name}</div>
                           <div className="flex items-center gap-2 text-neutral-400">
-                            <Phone className="w-3 h-3 text-amber-400 shrink-0" />
+                            <Phone className="w-3 h-3 text-brand-primary shrink-0" />
                             <span>{b.phone}</span>
                           </div>
                           <div className="text-[10px] text-neutral-500">{b.email}</div>
                         </td>
 
                         <td className="py-4 px-5 space-y-1">
-                          <div className="font-bold text-amber-400 flex items-center gap-1.5">
+                          <div className="font-bold text-brand-primary flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5" />
                             <span>{b.eventDate}</span>
                           </div>
@@ -598,16 +636,16 @@ export default function Admin() {
 
                         <td className="py-4 px-5 space-y-1">
                           <div className="font-semibold text-white">{b.servicePackage}</div>
-                          <div className="text-amber-400 font-bold">{b.budget}</div>
+                          <div className="text-brand-primary font-bold">{b.budget}</div>
                         </td>
 
                         <td className="py-4 px-5">
                           <span
                             className={`inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${
                               b.paymentStatus === 'Paid'
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                ? 'bg-brand-secondary/20 text-brand-secondary/80 border border-brand-secondary/40'
                                 : b.paymentStatus === 'Partially Paid'
-                                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                                ? 'bg-brand-primary/20 text-brand-primary/80 border border-brand-primary/40'
                                 : 'bg-red-500/20 text-red-300 border border-red-500/40'
                             }`}
                           >
@@ -622,7 +660,7 @@ export default function Admin() {
                           <select
                             value={b.status}
                             onChange={(e) => handleStatusChange(b._id, e.target.value)}
-                            className="bg-neutral-950 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-amber-400"
+                            className="bg-neutral-950 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-brand-primary"
                           >
                             <option value="Pending">Pending</option>
                             <option value="Confirmed">Confirmed</option>
@@ -637,7 +675,7 @@ export default function Admin() {
                               setLookupPhone(b.phone);
                               setIsLookupOpen(true);
                             }}
-                            className="p-2 rounded-lg bg-neutral-950 border border-neutral-800 text-amber-400 hover:text-amber-300"
+                            className="p-2 rounded-lg bg-neutral-950 border border-neutral-800 text-brand-primary hover:text-brand-primary/80"
                             title="Lookup Client History"
                           >
                             <UserCheck className="w-4 h-4" />
@@ -664,14 +702,14 @@ export default function Admin() {
       {/* TAB 2: CLIENT PHONE LOOKUP MODAL LINK */}
       {activeTab === 'lookup' && (
         <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-3xl text-center space-y-4 max-w-xl mx-auto">
-          <Phone className="w-12 h-12 text-amber-400 mx-auto" />
+          <Phone className="w-12 h-12 text-brand-primary mx-auto" />
           <h2 className="text-2xl font-bold text-white font-serif">Instant Phone Number Lookup</h2>
           <p className="text-xs text-neutral-400 font-mono">
             Click below to open the instant phone search modal for looking up client booking history & invoices.
           </p>
           <button
             onClick={() => setIsLookupOpen(true)}
-            className="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold font-mono px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider"
+            className="bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold font-mono px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider"
           >
             Launch Phone Search Modal
           </button>
@@ -689,7 +727,7 @@ export default function Admin() {
                 <h2 className="text-xl font-bold text-white font-serif">Generate Custom Invoice / Quotation</h2>
                 <p className="text-xs text-neutral-400 font-mono">Replicates sample invoice format (# INV-026)</p>
               </div>
-              <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 font-mono text-xs font-bold border border-amber-500/30">
+              <span className="px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary font-mono text-xs font-bold border border-brand-primary/30">
                 Official Format
               </span>
             </div>
@@ -704,7 +742,7 @@ export default function Admin() {
                     placeholder="e.g. Kasun Malaka"
                     value={invoiceForm.clientName}
                     onChange={(e) => setInvoiceForm({ ...invoiceForm, clientName: e.target.value })}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                   />
                 </div>
 
@@ -716,7 +754,7 @@ export default function Admin() {
                     placeholder="e.g. +94 77 123 4567"
                     value={invoiceForm.clientPhone}
                     onChange={(e) => setInvoiceForm({ ...invoiceForm, clientPhone: e.target.value })}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                   />
                 </div>
 
@@ -727,7 +765,19 @@ export default function Admin() {
                     placeholder="e.g. client@example.com"
                     value={invoiceForm.clientEmail}
                     onChange={(e) => setInvoiceForm({ ...invoiceForm, clientEmail: e.target.value })}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-neutral-400 mb-1">Advance / Paid Amount (LKR)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="e.g. 50000"
+                    value={invoiceForm.paidAmount}
+                    onChange={(e) => setInvoiceForm({ ...invoiceForm, paidAmount: Number(e.target.value) })}
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                   />
                 </div>
               </div>
@@ -739,7 +789,7 @@ export default function Admin() {
                   <button
                     type="button"
                     onClick={handleAddInvoiceItem}
-                    className="px-3 py-1.5 rounded-lg bg-neutral-950 border border-neutral-800 text-amber-400 hover:text-amber-300 font-bold text-xs flex items-center gap-1"
+                    className="px-3 py-1.5 rounded-lg bg-neutral-950 border border-neutral-800 text-brand-primary hover:text-brand-primary/80 font-bold text-xs flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Row</span>
@@ -770,7 +820,7 @@ export default function Admin() {
                         onChange={(e) => handleUpdateInvoiceItem(idx, 'rate', e.target.value)}
                         className="w-32 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white text-right"
                       />
-                      <div className="w-32 text-right font-bold text-amber-400 px-2">
+                      <div className="w-32 text-right font-bold text-brand-primary px-2">
                         LKR {(item.amount || 0).toLocaleString()}
                       </div>
                       <button
@@ -788,7 +838,7 @@ export default function Admin() {
               <div className="pt-4 flex justify-end">
                 <button
                   type="submit"
-                  className="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-mono flex items-center gap-2"
+                  className="bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-mono flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Generate Invoice & Open Printable View</span>
@@ -805,15 +855,15 @@ export default function Admin() {
               {invoices.map((inv) => (
                 <div
                   key={inv._id}
-                  className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 hover:border-amber-400/60 transition-colors"
+                  className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 hover:border-brand-primary/60 transition-colors"
                 >
                   <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                    <span className="font-bold text-amber-400">#{inv.invoiceNumber}</span>
+                    <span className="font-bold text-brand-primary">#{inv.invoiceNumber}</span>
                     <span
                       className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase ${
                         inv.paymentStatus === 'Paid'
-                          ? 'bg-emerald-500/20 text-emerald-300'
-                          : 'bg-amber-500/20 text-amber-300'
+                          ? 'bg-brand-secondary/20 text-brand-secondary/80'
+                          : 'bg-brand-primary/20 text-brand-primary/80'
                       }`}
                     >
                       {inv.paymentStatus || 'Unpaid'}
@@ -826,18 +876,34 @@ export default function Admin() {
                     <p className="text-neutral-500 text-[11px]">Date: {inv.invoiceDate}</p>
                   </div>
 
-                  <div className="border-t border-neutral-800 pt-2 flex justify-between font-bold">
-                    <span className="text-neutral-400">Balance Due:</span>
-                    <span className="text-white">LKR {(inv.balanceDue || 0).toLocaleString()}</span>
+                  <div className="border-t border-neutral-800 pt-3 space-y-1">
+                    <div className="flex justify-between font-bold text-xs text-neutral-400">
+                      <span>Total Paid:</span>
+                      <span className="text-brand-secondary">LKR {(inv.paidAmount || 0).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-sm">
+                      <span className="text-neutral-300">Balance Due:</span>
+                      <span className="text-white">LKR {(inv.balanceDue || 0).toLocaleString()}</span>
+                    </div>
                   </div>
 
-                  <button
-                    onClick={() => setSelectedInvoice(inv)}
-                    className="w-full py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-amber-400 hover:text-amber-300 font-bold text-xs flex items-center justify-center gap-2"
-                  >
-                    <Printer className="w-3.5 h-3.5" />
-                    <span>View & Print Official Invoice</span>
-                  </button>
+                  <div className="flex flex-col gap-2 pt-2">
+                    <button
+                      onClick={() => handleUpdateInvoicePayment(inv._id, inv.paidAmount)}
+                      className="w-full py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2"
+                    >
+                      <DollarSign className="w-3.5 h-3.5" />
+                      <span>Update Paid Amount</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setSelectedInvoice(inv)}
+                      className="w-full py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-brand-primary hover:text-brand-primary/80 font-bold text-xs flex items-center justify-center gap-2"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      <span>View & Print Official Invoice</span>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -853,7 +919,7 @@ export default function Admin() {
             <h2 className="text-xl font-bold text-white font-serif">Add Multi-Photo Album to Portfolio</h2>
             
             {albumSuccess && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono flex items-center gap-2">
+              <div className="p-4 rounded-xl bg-brand-secondary/10 border border-brand-secondary/30 text-brand-secondary/90 text-xs font-mono flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{albumSuccess}</span>
               </div>
@@ -876,7 +942,7 @@ export default function Admin() {
                     placeholder="e.g. Kasun & Dinusha Royal Wedding"
                     value={albumForm.title}
                     onChange={(e) => setAlbumForm({ ...albumForm, title: e.target.value })}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                   />
                 </div>
 
@@ -885,7 +951,7 @@ export default function Admin() {
                   <select
                     value={albumForm.category}
                     onChange={(e) => setAlbumForm({ ...albumForm, category: e.target.value })}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                   >
                     <option value="Weddings">Weddings</option>
                     <option value="Portraits">Portraits</option>
@@ -914,13 +980,13 @@ export default function Admin() {
                   placeholder="https://images.unsplash.com/photo-1..."
                   value={rawImagesInput}
                   onChange={(e) => setRawImagesInput(e.target.value)}
-                  className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-brand-primary"
                 />
               </div>
 
               <button
                 type="submit"
-                className="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-mono"
+                className="bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-mono"
               >
                 Save Multi-Photo Album
               </button>
@@ -956,61 +1022,102 @@ export default function Admin() {
             <p className="text-neutral-400">Customize accent colors and typography across all pages live</p>
           </div>
 
-          {/* Color Themes */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Palette className="w-4 h-4 text-amber-400" />
-              <span>Select Primary Accent Color</span>
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.entries(colorThemes).map(([key, t]) => (
-                <button
-                  key={key}
-                  onClick={() => setTheme(key)}
-                  className={`p-4 rounded-2xl border text-left transition-all flex items-center gap-3 ${
-                    currentThemeKey === key
-                      ? 'border-amber-400 bg-neutral-950 ring-2 ring-amber-400/50'
-                      : 'border-neutral-800 bg-neutral-950/50 hover:border-neutral-700'
-                  }`}
-                >
-                  <span
-                    className="w-6 h-6 rounded-full shrink-0 shadow-md"
-                    style={{ backgroundColor: t.primary }}
-                  />
-                  <div>
-                    <span className="font-bold text-white block text-xs">{t.name}</span>
-                    <span className="text-[10px] text-neutral-500">{t.primary}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Color Customizer */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <Palette className="w-4 h-4 text-brand-primary" />
+                <span>Brand Colors</span>
+              </h3>
+              
+              <div className="space-y-4 bg-neutral-950 p-6 rounded-2xl border border-neutral-800">
+                <div>
+                  <label className="block text-neutral-400 mb-2 font-bold">Primary Brand Color</label>
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="color"
+                      value={themeSettings?.primaryColor || '#f59e0b'}
+                      onChange={(e) => updateTheme({ primaryColor: e.target.value })}
+                      className="w-12 h-12 rounded cursor-pointer bg-transparent border-0 p-0"
+                    />
+                    <span className="text-lg text-white uppercase">{themeSettings?.primaryColor}</span>
                   </div>
-                </button>
-              ))}
+                </div>
+
+                <div>
+                  <label className="block text-neutral-400 mb-2 font-bold mt-6">Secondary Brand Color</label>
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="color"
+                      value={themeSettings?.secondaryColor || '#10b981'}
+                      onChange={(e) => updateTheme({ secondaryColor: e.target.value })}
+                      className="w-12 h-12 rounded cursor-pointer bg-transparent border-0 p-0"
+                    />
+                    <span className="text-lg text-white uppercase">{themeSettings?.secondaryColor}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Font Styles */}
-          <div className="space-y-3 pt-4 border-t border-neutral-800">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Type className="w-4 h-4 text-amber-400" />
-              <span>Select System Typography / Font Style</span>
-            </h3>
+            {/* Typography Customizer */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <Type className="w-4 h-4 text-brand-primary" />
+                <span>Typography Configuration</span>
+              </h3>
+              
+              <div className="space-y-4 bg-neutral-950 p-6 rounded-2xl border border-neutral-800">
+                <div>
+                  <label className="block text-neutral-400 mb-2 font-bold">Heading Font (Serif)</label>
+                  <select
+                    value={themeSettings?.fontFamilySerif || 'Playfair Display'}
+                    onChange={(e) => updateTheme({ fontFamilySerif: e.target.value })}
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-3 text-white focus:outline-none focus:border-brand-primary"
+                  >
+                    <option value="Playfair Display">Playfair Display</option>
+                    <option value="Merriweather">Merriweather</option>
+                    <option value="Lora">Lora</option>
+                    <option value="PT Serif">PT Serif</option>
+                    <option value="Libre Baskerville">Libre Baskerville</option>
+                    <option value="EB Garamond">EB Garamond</option>
+                    <option value="Noto Serif">Noto Serif</option>
+                    <option value="Bodoni Moda">Bodoni Moda</option>
+                    <option value="Cormorant Garamond">Cormorant Garamond</option>
+                    <option value="Crimson Text">Crimson Text</option>
+                    <option value="Bitter">Bitter</option>
+                    <option value="Zilla Slab">Zilla Slab</option>
+                    <option value="Cinzel">Cinzel</option>
+                    <option value="Georgia">Georgia (System)</option>
+                    <option value="Times New Roman">Times New Roman (System)</option>
+                  </select>
+                </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {Object.entries(fontStyles).map(([key, f]) => (
-                <button
-                  key={key}
-                  onClick={() => setFont(key)}
-                  className={`p-4 rounded-2xl border text-left transition-all ${
-                    currentFontKey === key
-                      ? 'border-amber-400 bg-neutral-950 ring-2 ring-amber-400/50'
-                      : 'border-neutral-800 bg-neutral-950/50 hover:border-neutral-700'
-                  }`}
-                >
-                  <span className="font-bold text-white block text-sm" style={{ fontFamily: f.family }}>
-                    {f.name}
-                  </span>
-                  <span className="text-[10px] text-neutral-500 block mt-1">Sample Typography Text</span>
-                </button>
-              ))}
+                <div>
+                  <label className="block text-neutral-400 mb-2 font-bold mt-4">Base Font (Sans)</label>
+                  <select
+                    value={themeSettings?.fontFamilySans || 'Inter'}
+                    onChange={(e) => updateTheme({ fontFamilySans: e.target.value })}
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-3 text-white focus:outline-none focus:border-brand-primary"
+                  >
+                    <option value="Inter">Inter</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Nunito">Nunito</option>
+                    <option value="Oswald">Oswald</option>
+                    <option value="Raleway">Raleway</option>
+                    <option value="Ubuntu">Ubuntu</option>
+                    <option value="PT Sans">PT Sans</option>
+                    <option value="Mukta">Mukta</option>
+                    <option value="Fira Sans">Fira Sans</option>
+                    <option value="Quicksand">Quicksand</option>
+                    <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Helvetica">Helvetica (System)</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1026,10 +1133,14 @@ export default function Admin() {
 
       <ClientLookupModal
         isOpen={isLookupOpen}
-        onClose={() => setIsLookupOpen(false)}
+        onClose={() => {
+          setIsLookupOpen(false);
+          setLookupPhone('');
+        }}
         initialPhone={lookupPhone}
         onSelectInvoice={(inv) => {
           setIsLookupOpen(false);
+          setLookupPhone('');
           setSelectedInvoice(inv);
         }}
       />

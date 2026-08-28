@@ -37,11 +37,11 @@ export default function CameraScrollIndicator() {
         to="/contact"
         className={`px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 font-mono shadow-2xl ${
           isFilled
-            ? 'bg-amber-500 hover:bg-amber-400 text-neutral-950 border-2 border-amber-300 scale-105 shadow-lg shadow-amber-500/30'
-            : 'bg-neutral-950/90 hover:bg-neutral-900 border border-neutral-700 hover:border-amber-400 text-amber-400 hover:text-amber-300'
+            ? 'bg-brand-primary hover:bg-brand-primary text-neutral-950 border-2 border-brand-primary/80 scale-105 shadow-lg shadow-brand-primary/30'
+            : 'bg-neutral-950/90 hover:bg-neutral-900 border border-neutral-700 hover:border-brand-primary text-brand-primary hover:text-brand-primary/80'
         }`}
       >
-        <Calendar className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFilled ? 'text-neutral-950' : 'text-amber-400'}`} />
+        <Calendar className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFilled ? 'text-neutral-950' : 'text-brand-primary'}`} />
         <span className="tracking-wide uppercase">{isFilled ? 'Book Now' : 'Book Session'}</span>
       </Link>
 
@@ -49,7 +49,7 @@ export default function CameraScrollIndicator() {
       <div
         className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 bg-neutral-950 shadow-2xl border ${
           isFilled
-            ? 'border-2 border-amber-400 shadow-amber-500/20 scale-105'
+            ? 'border-2 border-brand-primary shadow-brand-primary/20 scale-105'
             : 'border-neutral-800 hover:border-neutral-700'
         }`}
       >
@@ -86,12 +86,12 @@ export default function CameraScrollIndicator() {
         <div className="relative z-20 flex flex-col items-center justify-center space-y-0.5">
           <Camera
             className={`w-5 h-5 transition-colors duration-200 ${
-              isFilled ? 'text-amber-400' : 'text-neutral-200'
+              isFilled ? 'text-brand-primary' : 'text-neutral-200'
             }`}
           />
           <span
             className={`text-[10px] font-mono font-bold leading-none ${
-              isFilled ? 'text-amber-400' : 'text-neutral-400'
+              isFilled ? 'text-brand-primary' : 'text-neutral-400'
             }`}
           >
             {isFilled ? '100%' : `${Math.round(scrollProgress)}%`}

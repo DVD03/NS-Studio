@@ -16,12 +16,12 @@ router.get('/', async (req, res) => {
 // POST /api/bookings
 router.post('/', async (req, res) => {
   try {
-    const { name, phone, email, eventType, eventDate, servicePackage, budget, message } = req.body;
+    const { name, phone, email, eventType, eventDate, timeSlot, servicePackage, budget, message } = req.body;
     
-    if (!name || !phone || !email || !eventDate) {
+    if (!name || !phone || !email || !eventDate || !timeSlot) {
       return res.status(400).json({
         success: false,
-        message: 'Name, phone, email, and event date are required.',
+        message: 'Name, phone, email, event date, and time are required.',
       });
     }
 
@@ -31,6 +31,7 @@ router.post('/', async (req, res) => {
       email,
       eventType,
       eventDate,
+      timeSlot,
       servicePackage,
       budget,
       message,

@@ -48,7 +48,7 @@ export default function About() {
       
       {/* Page Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+        <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
           Behind The Lens
         </span>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-white font-serif">
@@ -73,7 +73,7 @@ export default function About() {
             <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-80" />
             <div className="absolute bottom-6 left-6 right-6 p-6 bg-neutral-900/90 border border-neutral-800 rounded-2xl backdrop-blur-md">
               <h3 className="text-lg font-bold text-white font-serif">Kavinda Perera</h3>
-              <p className="text-xs text-amber-400 font-semibold uppercase tracking-wider mt-0.5">
+              <p className="text-xs text-brand-primary font-semibold uppercase tracking-wider mt-0.5">
                 Lead Visual Director & Founder
               </p>
             </div>
@@ -82,7 +82,7 @@ export default function About() {
           {/* Story Text */}
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+              <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
                 Creative Philosophy
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-white font-serif">
@@ -101,14 +101,14 @@ export default function About() {
             {/* Feature Bullets */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div className="flex items-start gap-3 p-3 rounded-xl bg-neutral-900/60 border border-neutral-800">
-                <ShieldCheck className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                <ShieldCheck className="w-5 h-5 text-brand-primary shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-white">Full Redundancy</h4>
                   <p className="text-xs text-neutral-400">Dual memory slot backup on every shoot.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-3 rounded-xl bg-neutral-900/60 border border-neutral-800">
-                <Award className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                <Award className="w-5 h-5 text-brand-primary shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-white">Award-Winning Color</h4>
                   <p className="text-xs text-neutral-400">Custom film emulation and color grading.</p>
@@ -125,7 +125,7 @@ export default function About() {
       <section className="bg-neutral-900/40 border-y border-neutral-800/60 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-2 max-w-xl mx-auto">
-            <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+            <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
               Our Journey
             </span>
             <h2 className="text-3xl font-bold text-white font-serif">Studio Milestones</h2>
@@ -134,7 +134,7 @@ export default function About() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {milestones.map((m, index) => (
               <div key={index} className="bg-neutral-950 p-6 rounded-2xl border border-neutral-800 space-y-3">
-                <span className="text-2xl font-black text-amber-400 font-mono">{m.year}</span>
+                <span className="text-2xl font-black text-brand-primary font-mono">{m.year}</span>
                 <h3 className="text-lg font-bold text-white font-serif">{m.title}</h3>
                 <p className="text-xs text-neutral-400 leading-relaxed">{m.desc}</p>
               </div>
@@ -146,7 +146,7 @@ export default function About() {
       {/* Equipment Showcase */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="space-y-3 text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-amber-400 text-xs font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-brand-primary text-xs font-mono">
             <Cpu className="w-4 h-4" />
             <span>High-End Cinema Arsenal</span>
           </div>
@@ -163,14 +163,14 @@ export default function About() {
           {gearCategories.map((cat, idx) => (
             <div key={idx} className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-8 space-y-6">
               <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
-                <Sliders className="w-5 h-5 text-amber-400" />
+                <Sliders className="w-5 h-5 text-brand-primary" />
                 <h3 className="text-xl font-bold text-white font-serif">{cat.category}</h3>
               </div>
               
               <div className="space-y-4">
                 {cat.items.map((item, itemIdx) => (
                   <div key={itemIdx} className="space-y-1 bg-neutral-950 p-4 rounded-xl border border-neutral-900">
-                    <div className="text-sm font-bold text-amber-300 font-mono">{item.name}</div>
+                    <div className="text-sm font-bold text-brand-primary/80 font-mono">{item.name}</div>
                     <div className="text-xs text-neutral-400 leading-relaxed">{item.desc}</div>
                   </div>
                 ))}
@@ -186,7 +186,7 @@ export default function About() {
           <h3 className="text-2xl font-bold text-white font-serif">Want to collaborate or hire us for an event?</h3>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-3.5 rounded-xl transition-all"
+            className="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-8 py-3.5 rounded-xl transition-all"
           >
             <span>Get in Touch</span>
             <ArrowRight className="w-4 h-4" />

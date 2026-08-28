@@ -1,8 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Bodoni+Moda&family=Cinzel&family=Cormorant+Garamond&family=Crimson+Text&family=EB+Garamond&family=Fira+Sans&family=Inter&family=Lato&family=Libre+Baskerville&family=Lora&family=Merriweather&family=Montserrat&family=Mukta&family=Noto+Serif&family=Nunito&family=Open+Sans&family=Oswald&family=Playfair+Display&family=Plus+Jakarta+Sans&family=Poppins&family=PT+Sans&family=PT+Serif&family=Quicksand&family=Raleway&family=Roboto&family=Ubuntu&family=Zilla+Slab&display=swap');
+
+
+@theme {
+  --color-brand-primary: var(--theme-color-primary, #f59e0b);
+  --color-brand-secondary: var(--theme-color-secondary, #10b981);
+  --font-sans: var(--theme-font-sans, "Inter"), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--theme-font-serif, "Playfair Display"), ui-serif, Georgia, serif;
+}
 
 @layer base {
   body {
-    @apply bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-amber-500 selection:text-neutral-950;
+    @apply bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-brand-primary selection:text-neutral-950;
   }
 }
 

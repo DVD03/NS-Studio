@@ -5,11 +5,12 @@ import { connectDB } from './config/db.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
 import invoiceRoutes from './routes/invoiceRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors({ origin: '*' }));
@@ -31,8 +32,13 @@ app.get('/api/health', (req, res) => {
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Start Server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`[Express Backend] Server running on http://localhost:${PORT}`);
 });
+
+server.on('close', () => console.log('Express Server closed'));
+server.on('error', (err) => console.error('Express Server error:', err));
+process.on('exit', (code) => console.log('Node process exiting with code', code));
