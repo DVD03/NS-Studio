@@ -91,40 +91,40 @@ export default function Home() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8 py-20">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6 sm:space-y-8 py-10 sm:py-20">
 
           {/* Badge */}
-          <div className="animate-slide-up inline-flex items-center gap-2 px-5 py-2 rounded-full glass border border-amber-500/30">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-xs uppercase tracking-widest text-amber-300 font-semibold font-mono">
+          <div className="animate-slide-up inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full glass border border-amber-500/30">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-amber-300 font-semibold font-mono">
               Professional Photography & Videography Studio
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="animate-slide-up animate-delay-100 text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05] font-serif">
+          <h1 className="animate-slide-up animate-delay-100 text-3xl sm:text-6xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] font-serif">
             <span className="text-white">Capturing Timeless</span><br />
             <span className="gradient-text">Stories Through</span><br />
             <span className="text-white">Lens & Motion</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="animate-slide-up animate-delay-200 max-w-2xl mx-auto text-neutral-300 text-base sm:text-lg leading-relaxed">
+          <p className="animate-slide-up animate-delay-200 max-w-2xl mx-auto text-neutral-300 text-sm sm:text-lg leading-relaxed">
             Specializing in high-end wedding films, editorial portraiture, commercial campaigns, and breathtaking drone cinematography across Sri Lanka and worldwide.
           </p>
 
           {/* Action Buttons */}
-          <div className="animate-slide-up animate-delay-300 flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="animate-slide-up animate-delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
             <Link
               to="/portfolio"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-4 rounded-xl text-base transition-colors active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base transition-colors active:scale-95"
             >
               <span>Explore Portfolio</span>
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
             <Link
               to="/contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold border border-neutral-700 hover:border-neutral-600 px-8 py-4 rounded-xl text-base transition-colors active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold border border-neutral-700 hover:border-neutral-600 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base transition-colors active:scale-95"
             >
               <span>Book Appointment</span>
             </Link>
