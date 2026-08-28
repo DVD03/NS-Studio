@@ -9,7 +9,7 @@ export default function CurrencyToggle() {
         onClick={() => setCurrency('LKR')}
         className={`px-2.5 py-1 rounded-lg transition-colors ${
           currency === 'LKR'
-            ? 'bg-amber-500 text-neutral-950 shadow-sm'
+            ? 'bg-brand-primary text-neutral-950 shadow-sm'
             : 'text-neutral-400 hover:text-white'
         }`}
         title="Show prices in LKR (Sri Lankan Rupees)"
@@ -20,7 +20,7 @@ export default function CurrencyToggle() {
         onClick={() => setCurrency('USD')}
         className={`px-2.5 py-1 rounded-lg transition-colors ${
           currency === 'USD'
-            ? 'bg-amber-500 text-neutral-950 shadow-sm'
+            ? 'bg-brand-primary text-neutral-950 shadow-sm'
             : 'text-neutral-400 hover:text-white'
         }`}
         title="Convert prices to USD (US Dollars)"

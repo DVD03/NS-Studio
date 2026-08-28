@@ -75,13 +75,15 @@ export default function CalendarView() {
     const checkDate = new Date(year, month, dayNum);
     const dateStr = formatDateString(checkDate);
 
-    const booking = bookedDates.find((b) => b.date === dateStr);
-    return { dateStr, checkDate, booking };
+    const dayBookings = bookedDates.filter((b) => b.date === dateStr && b.status === 'Confirmed');
+    return { dateStr, checkDate, dayBookings };
   };
 
-  const handleSelectDate = (dateStr, isBooked, booking) => {
+  const handleSelectDate = (dateStr, isBooked, dayBookings) => {
     if (isBooked) {
-      setSelectedClash(booking);
+      // Just pass the bookings array to clash state if needed, but the original expected a single booking
+      // Let's pass the first booking for the warning banner
+      setSelectedClash(dayBookings[0]);
       return;
     }
     setSelectedClash(null);
@@ -93,7 +95,7 @@ export default function CalendarView() {
       
       {/* Header */}
       <section className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono bg-amber-500/10 border border-amber-500/25">
+        <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono bg-brand-primary/10 border border-brand-primary/25">
           Live Availability Schedule
         </span>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-white font-serif">
@@ -106,7 +108,7 @@ export default function CalendarView() {
         {/* Legend */}
         <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
+            <span className="w-3.5 h-3.5 rounded-md bg-brand-secondary/20 border border-brand-secondary/40 text-brand-secondary/90 flex items-center justify-center">
               <CheckCircle2 className="w-3.5 h-3.5" />
             </span>
             <span className="text-neutral-300">Available Date (Click to Reserve)</span>
@@ -156,16 +158,16 @@ export default function CalendarView() {
         {/* Month Selector Bar */}
         <div className="flex items-center justify-between border-b border-neutral-800 pb-6">
           <div className="flex items-center gap-3">
-            <CalendarIcon className="w-6 h-6 text-amber-400" />
+            <CalendarIcon className="w-6 h-6 text-brand-primary" />
             <h2 className="text-2xl sm:text-3xl font-bold text-white font-serif">
-              {monthNames[month]} <span className="text-amber-400 font-mono">{year}</span>
+              {monthNames[month]} <span className="text-brand-primary font-mono">{year}</span>
             </h2>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={prevMonth}
-              className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-neutral-300 hover:text-white hover:border-amber-400 transition-all"
+              className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-neutral-300 hover:text-white hover:border-brand-primary transition-all"
               title="Previous Month"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -173,14 +175,14 @@ export default function CalendarView() {
 
             <button
               onClick={() => setCurrentDate(new Date())}
-              className="px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-xs font-mono text-amber-400 hover:text-amber-300 font-bold transition-all"
+              className="px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-xs font-mono text-brand-primary hover:text-brand-primary/80 font-bold transition-all"
             >
               Today
             </button>
 
             <button
               onClick={nextMonth}
-              className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-neutral-300 hover:text-white hover:border-amber-400 transition-all"
+              className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-neutral-300 hover:text-white hover:border-brand-primary transition-all"
               title="Next Month"
             >
               <ChevronRight className="w-5 h-5" />
@@ -207,40 +209,40 @@ export default function CalendarView() {
           {/* Days in Month */}
           {Array.from({ length: daysInMonth }).map((_, idx) => {
             const dayNum = idx + 1;
-            const { dateStr, checkDate, booking } = getDateBookingInfo(dayNum);
+            const { dateStr, checkDate, dayBookings } = getDateBookingInfo(dayNum);
 
             const isPast = checkDate < new Date(todayStr);
             const isToday = dateStr === todayStr;
-            const isBooked = !!booking && (booking.status === 'Confirmed' || booking.status === 'Pending');
+            const isBooked = dayBookings && dayBookings.length > 0;
 
             return (
               <div
                 key={dayNum}
-                onClick={() => !isPast && handleSelectDate(dateStr, isBooked, booking)}
+                onClick={() => !isPast && handleSelectDate(dateStr, isBooked, dayBookings)}
                 className={`relative h-16 sm:h-28 p-1 sm:p-3 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between ${
                   isPast
                     ? 'bg-neutral-950/50 border-neutral-900 text-neutral-600 opacity-60 cursor-not-allowed'
                     : isBooked
                     ? 'bg-red-950/40 border-red-500/40 text-red-200 cursor-not-allowed shadow-inner'
-                    : 'bg-neutral-950 border-neutral-800 hover:border-amber-400 hover:bg-neutral-900 cursor-pointer group shadow-sm'
-                } ${isToday ? 'ring-1 sm:ring-2 ring-amber-400' : ''}`}
+                    : 'bg-neutral-950 border-neutral-800 hover:border-brand-primary hover:bg-neutral-900 cursor-pointer group shadow-sm'
+                } ${isToday ? 'ring-1 sm:ring-2 ring-brand-primary' : ''}`}
               >
                 {/* Day Number Header */}
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-mono text-xs sm:text-base font-bold ${
                       isToday
-                        ? 'text-amber-400'
+                        ? 'text-brand-primary'
                         : isBooked
                         ? 'text-red-400'
-                        : 'text-neutral-200 group-hover:text-amber-300'
+                        : 'text-neutral-200 group-hover:text-brand-primary/80'
                     }`}
                   >
                     {dayNum}
                   </span>
 
                   {isToday && (
-                    <span className="hidden sm:inline-block text-[8px] sm:text-[9px] font-mono px-1 py-0.5 rounded bg-amber-400 text-neutral-950 font-bold uppercase">
+                    <span className="hidden sm:inline-block text-[8px] sm:text-[9px] font-mono px-1 py-0.5 rounded bg-brand-primary text-neutral-950 font-bold uppercase">
                       Today
                     </span>
                   )}
@@ -251,16 +253,25 @@ export default function CalendarView() {
                   {isPast ? (
                     <span className="text-[8px] sm:text-[10px] font-mono text-neutral-600 block">Passed</span>
                   ) : isBooked ? (
-                    <div className="space-y-0.5">
-                      <span className="inline-flex items-center gap-0.5 px-1 sm:px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-red-300 text-[8px] sm:text-[10px] font-mono font-bold">
-                        <XCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-red-400 shrink-0" />
-                        <span className="truncate">Booked</span>
-                      </span>
+                    <div className="space-y-1 overflow-y-auto max-h-12 sm:max-h-20 scrollbar-hide">
+                      {dayBookings.map((b, i) => (
+                        <div key={i} className="space-y-0.5">
+                          <span className="inline-flex items-center gap-0.5 px-1 sm:px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-red-300 text-[8px] sm:text-[10px] font-mono font-bold w-full">
+                            <XCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-red-400 shrink-0" />
+                            <span className="truncate flex-1 text-left">Booked</span>
+                          </span>
+                          {b.timeSlot && (
+                            <div className="text-[7px] sm:text-[9px] font-mono text-red-300/90 leading-tight">
+                              {b.timeSlot}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <div className="space-y-0.5">
-                      <span className="inline-flex items-center gap-0.5 px-1 sm:px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[8px] sm:text-[10px] font-mono font-bold group-hover:bg-amber-500 group-hover:text-neutral-950 transition-colors">
-                        <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400 group-hover:text-neutral-950 shrink-0" />
+                      <span className="inline-flex items-center gap-0.5 px-1 sm:px-2 py-0.5 rounded bg-brand-secondary/20 border border-brand-secondary/40 text-brand-secondary/80 text-[8px] sm:text-[10px] font-mono font-bold group-hover:bg-brand-primary group-hover:text-neutral-950 transition-colors">
+                        <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-brand-secondary/90 group-hover:text-neutral-950 shrink-0" />
                         <span className="truncate">Open</span>
                       </span>
                     </div>
@@ -283,7 +294,7 @@ export default function CalendarView() {
         <div className="pt-2">
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-sm transition-colors active:scale-95"
+            className="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-8 py-3.5 rounded-xl text-sm transition-colors active:scale-95"
           >
             <span>Proceed to Reservation Form</span>
             <ArrowRight className="w-4 h-4" />

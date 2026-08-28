@@ -9,11 +9,21 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
-    if (initialPhone) {
-      setSearchPhone(initialPhone);
-      handleSearch(initialPhone);
+    if (isOpen) {
+      if (initialPhone) {
+        setSearchPhone(initialPhone);
+        handleSearch(initialPhone);
+      } else {
+        setSearchPhone('');
+        setClientData(null);
+        setHasSearched(false);
+      }
+    } else {
+      setSearchPhone('');
+      setClientData(null);
+      setHasSearched(false);
     }
-  }, [initialPhone]);
+  }, [isOpen, initialPhone]);
 
   const handleSearch = async (phoneToSearch) => {
     const query = phoneToSearch || searchPhone;
@@ -79,7 +89,7 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/30 text-brand-primary flex items-center justify-center font-bold">
               <User className="w-5 h-5" />
             </div>
             <div>
@@ -111,14 +121,14 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
               placeholder="Enter client phone number (e.g. 0773053014)..."
               value={searchPhone}
               onChange={(e) => setSearchPhone(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-mono"
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary font-mono"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold font-mono text-sm transition-colors flex items-center gap-2 shrink-0"
+            className="px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold font-mono text-sm transition-colors flex items-center gap-2 shrink-0"
           >
             <Search className="w-4 h-4" />
             <span>{loading ? 'Searching...' : 'Lookup'}</span>
@@ -135,11 +145,11 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
                 <h3 className="text-lg font-bold text-white font-serif">{clientData.name}</h3>
                 <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-400 font-mono">
                   <span className="flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-amber-400" />
+                    <Phone className="w-3.5 h-3.5 text-brand-primary" />
                     <span>{clientData.phone}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-amber-400" />
+                    <Mail className="w-3.5 h-3.5 text-brand-primary" />
                     <span>{clientData.email}</span>
                   </span>
                 </div>
@@ -147,11 +157,11 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
 
               {/* Spend Badges */}
               <div className="flex items-center gap-3 font-mono text-xs">
-                <div className="bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-emerald-400">
+                <div className="bg-brand-secondary/10 border border-brand-secondary/30 px-3.5 py-2 rounded-xl text-brand-secondary/90">
                   <span className="text-[10px] text-neutral-400 block uppercase">Total Paid</span>
                   <span className="font-bold text-sm">LKR {clientData.totalSpent.toLocaleString()}</span>
                 </div>
-                <div className="bg-amber-500/10 border border-amber-500/30 px-3.5 py-2 rounded-xl text-amber-400">
+                <div className="bg-brand-primary/10 border border-brand-primary/30 px-3.5 py-2 rounded-xl text-brand-primary">
                   <span className="text-[10px] text-neutral-400 block uppercase">Balance Due</span>
                   <span className="font-bold text-sm">LKR {clientData.totalDue.toLocaleString()}</span>
                 </div>
@@ -161,7 +171,7 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
             {/* Booking History Section */}
             <div className="space-y-3">
               <h4 className="text-sm font-bold text-neutral-300 uppercase tracking-wider font-mono flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-amber-400" />
+                <Calendar className="w-4 h-4 text-brand-primary" />
                 <span>Booking History ({clientData.bookings.length})</span>
               </h4>
 
@@ -175,7 +185,7 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-white text-sm font-serif">{booking.servicePackage}</span>
-                          <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px]">
+                          <span className="px-2 py-0.5 rounded bg-brand-primary/10 text-brand-primary text-[10px]">
                             {booking.eventType}
                           </span>
                         </div>
@@ -185,8 +195,8 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
                       <span
                         className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase ${
                           booking.status === 'Confirmed'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                            ? 'bg-brand-secondary/20 text-brand-secondary/80 border border-brand-secondary/40'
+                            : 'bg-brand-primary/20 text-brand-primary/80 border border-brand-primary/40'
                         }`}
                       >
                         {booking.status}
@@ -202,7 +212,7 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
             {/* Invoices List Section */}
             <div className="space-y-3">
               <h4 className="text-sm font-bold text-neutral-300 uppercase tracking-wider font-mono flex items-center gap-2">
-                <FileText className="w-4 h-4 text-amber-400" />
+                <FileText className="w-4 h-4 text-brand-primary" />
                 <span>Invoices & Quotations ({clientData.invoices.length})</span>
               </h4>
 
@@ -212,10 +222,10 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
                     <div
                       key={inv._id}
                       onClick={() => onSelectInvoice && onSelectInvoice(inv)}
-                      className="bg-neutral-950 border border-neutral-800 hover:border-amber-400 p-4 rounded-xl flex items-center justify-between text-xs font-mono cursor-pointer transition-colors group"
+                      className="bg-neutral-950 border border-neutral-800 hover:border-brand-primary p-4 rounded-xl flex items-center justify-between text-xs font-mono cursor-pointer transition-colors group"
                     >
                       <div>
-                        <span className="font-bold text-amber-400 group-hover:underline">#{inv.invoiceNumber}</span>
+                        <span className="font-bold text-brand-primary group-hover:underline">#{inv.invoiceNumber}</span>
                         <p className="text-neutral-400 text-[11px]">Total: LKR {(inv.total || 0).toLocaleString()} | Balance Due: LKR {(inv.balanceDue || 0).toLocaleString()}</p>
                       </div>
 
@@ -223,15 +233,15 @@ export default function ClientLookupModal({ isOpen, onClose, initialPhone = '', 
                         <span
                           className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase ${
                             inv.paymentStatus === 'Paid'
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                              ? 'bg-brand-secondary/20 text-brand-secondary/80 border border-brand-secondary/40'
                               : inv.paymentStatus === 'Partially Paid'
-                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                              ? 'bg-brand-primary/20 text-brand-primary/80 border border-brand-primary/40'
                               : 'bg-red-500/20 text-red-300 border border-red-500/40'
                           }`}
                         >
                           {inv.paymentStatus || 'Unpaid'}
                         </span>
-                        <span className="text-[11px] text-neutral-400 group-hover:text-amber-300">View Invoice &rarr;</span>
+                        <span className="text-[11px] text-neutral-400 group-hover:text-brand-primary/80">View Invoice &rarr;</span>
                       </div>
                     </div>
                   ))}

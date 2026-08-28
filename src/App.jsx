@@ -24,7 +24,7 @@ export default function App() {
           <ScrollToTop />
           <ScrollProgress />
           <CameraScrollIndicator />
-          <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 font-sans selection:bg-amber-500 selection:text-neutral-950">
+          <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 font-sans selection:bg-brand-primary selection:text-neutral-950">
             <Navbar />
             <main className="flex-grow">
               <Routes>

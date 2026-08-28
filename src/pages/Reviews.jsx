@@ -67,7 +67,7 @@ export default function Reviews() {
       
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold font-mono">
+        <span className="text-xs uppercase tracking-widest text-brand-primary font-semibold font-mono">
           Client Feedback
         </span>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-white font-serif">
@@ -81,9 +81,9 @@ export default function Reviews() {
       {/* Trust Rating Summary */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 text-center space-y-4">
-          <div className="flex justify-center gap-1.5 text-amber-400">
+          <div className="flex justify-center gap-1.5 text-brand-primary">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-7 h-7 fill-amber-400" />
+              <Star key={i} className="w-7 h-7 fill-brand-primary" />
             ))}
           </div>
           <div className="text-3xl font-extrabold text-white font-serif">
@@ -101,16 +101,16 @@ export default function Reviews() {
           {reviewsList.map((rev) => (
             <div
               key={rev.id}
-              className="bg-neutral-900/60 border border-neutral-800 p-8 rounded-3xl flex flex-col justify-between space-y-6 hover:border-amber-500/40 transition-all"
+              className="bg-neutral-900/60 border border-neutral-800 p-8 rounded-3xl flex flex-col justify-between space-y-6 hover:border-brand-primary/40 transition-all"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex gap-1 text-amber-400">
+                  <div className="flex gap-1 text-brand-primary">
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      <Star key={i} className="w-4 h-4 fill-brand-primary" />
                     ))}
                   </div>
-                  <Quote className="w-6 h-6 text-amber-500/40" />
+                  <Quote className="w-6 h-6 text-brand-primary/40" />
                 </div>
 
                 <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed italic">
@@ -122,11 +122,11 @@ export default function Reviews() {
                 <img
                   src={rev.avatar}
                   alt={rev.names}
-                  className="w-11 h-11 rounded-full object-cover border border-amber-500/40"
+                  className="w-11 h-11 rounded-full object-cover border border-brand-primary/40"
                 />
                 <div>
                   <h4 className="text-sm font-bold text-white font-serif">{rev.names}</h4>
-                  <p className="text-[11px] text-amber-400 font-semibold">{rev.event}</p>
+                  <p className="text-[11px] text-brand-primary font-semibold">{rev.event}</p>
                   <p className="text-[10px] text-neutral-500 font-mono">{rev.service} • {rev.date}</p>
                 </div>
               </div>

@@ -16,7 +16,7 @@ export default function Home() {
       category: 'Wedding Photography',
       image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
       type: 'photo',
-      color: 'from-amber-500/30 to-rose-500/30',
+      color: 'from-brand-primary/30 to-rose-500/30',
     },
     {
       id: 2,
@@ -32,7 +32,7 @@ export default function Home() {
       category: 'Commercial Production',
       image: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=1200&q=80',
       type: 'photo',
-      color: 'from-pink-500/30 to-amber-500/30',
+      color: 'from-pink-500/30 to-brand-primary/30',
     },
     {
       id: 4,
@@ -49,8 +49,8 @@ export default function Home() {
       icon: Camera,
       title: 'Wedding & Fine Art Photography',
       desc: 'Authentic emotion, candid moments, and luxury editorial styling captured with high-resolution clarity.',
-      accent: 'from-amber-500 to-orange-500',
-      glow: 'shadow-amber-500/20',
+      accent: 'from-brand-primary to-orange-500',
+      glow: 'shadow-brand-primary/20',
     },
     {
       icon: Video,
@@ -94,9 +94,9 @@ export default function Home() {
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6 sm:space-y-8 py-10 sm:py-20">
 
           {/* Badge */}
-          <div className="animate-slide-up inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full glass border border-amber-500/30">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-amber-300 font-semibold font-mono">
+          <div className="animate-slide-up inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full glass border border-brand-primary/30">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-brand-primary animate-pulse" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-brand-primary/80 font-semibold font-mono">
               Professional Photography & Videography Studio
             </span>
           </div>
@@ -117,7 +117,7 @@ export default function Home() {
           <div className="animate-slide-up animate-delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
             <Link
               to="/portfolio"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base transition-colors active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base transition-colors active:scale-95"
             >
               <span>Explore Portfolio</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -133,8 +133,8 @@ export default function Home() {
           {/* Feature Badges */}
           <div className="animate-slide-up animate-delay-400 pt-10 flex flex-wrap justify-center gap-4 sm:gap-8 text-neutral-400 text-xs sm:text-sm font-medium">
             {['4K Cinema Videography', 'High Resolution Stills', 'Worldwide Travel Ready'].map(feat => (
-              <div key={feat} className="flex items-center gap-2 glass px-3 py-1.5 rounded-full border border-amber-500/20">
-                <CheckCircle2 className="w-4 h-4 text-amber-400" />
+              <div key={feat} className="flex items-center gap-2 glass px-3 py-1.5 rounded-full border border-brand-primary/20">
+                <CheckCircle2 className="w-4 h-4 text-brand-primary" />
                 <span className="text-neutral-200">{feat}</span>
               </div>
             ))}
@@ -143,7 +143,7 @@ export default function Home() {
 
         {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <div className="w-px h-10 bg-gradient-to-b from-amber-400/60 to-transparent" />
+          <div className="w-px h-10 bg-gradient-to-b from-brand-primary/60 to-transparent" />
         </div>
       </section>
 
@@ -163,7 +163,7 @@ export default function Home() {
                   {stat.label}
                 </div>
                 {/* Bottom accent bar */}
-                <div className="absolute bottom-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-brand-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             ))}
           </div>
@@ -177,14 +177,14 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3">
-            <span className="inline-block px-3 py-1 rounded-full text-xs uppercase tracking-widest text-amber-300 font-semibold font-mono bg-amber-500/10 border border-amber-500/20">
+            <span className="inline-block px-3 py-1 rounded-full text-xs uppercase tracking-widest text-brand-primary/80 font-semibold font-mono bg-brand-primary/10 border border-brand-primary/20">
               Selected Showcase
             </span>
             <h2 className="text-3xl sm:text-5xl font-bold text-white font-serif">
               Featured <span className="gradient-text-warm">Photo & Film</span> Highlights
             </h2>
           </div>
-          <Link to="/portfolio" className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold text-sm group">
+          <Link to="/portfolio" className="inline-flex items-center gap-2 text-brand-primary hover:text-brand-primary/80 font-semibold text-sm group">
             <span>View All Works</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -210,7 +210,7 @@ export default function Home() {
                 {/* Play button for video */}
                 {item.type === 'video' && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-500 transition-all duration-300 animate-pulse-glow">
+                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-primary transition-all duration-300 animate-pulse-glow">
                       <Play className="w-7 h-7 fill-white text-white ml-1" />
                     </div>
                   </div>
@@ -221,7 +221,7 @@ export default function Home() {
                 <span className={`inline-block px-3 py-1 rounded-md bg-gradient-to-r ${item.color} border border-white/10 text-[11px] font-semibold text-white uppercase tracking-wider backdrop-blur-sm`}>
                   {item.category}
                 </span>
-                <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors font-serif">
+                <h3 className="text-xl font-bold text-white group-hover:text-brand-primary/80 transition-colors font-serif">
                   {item.title}
                 </h3>
               </div>
@@ -273,10 +273,10 @@ export default function Home() {
           <div className="text-center">
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold px-7 py-3.5 rounded-2xl text-sm border border-neutral-700 hover:border-amber-500/40 transition-all"
+              className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold px-7 py-3.5 rounded-2xl text-sm border border-neutral-700 hover:border-brand-primary/40 transition-all"
             >
               <span>View Packages & Pricing</span>
-              <ArrowRight className="w-4 h-4 text-amber-400" />
+              <ArrowRight className="w-4 h-4 text-brand-primary" />
             </Link>
           </div>
         </div>
@@ -300,7 +300,7 @@ export default function Home() {
             <div className="relative flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-8 py-4 rounded-xl text-base transition-colors active:scale-95"
+                className="inline-flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold px-8 py-4 rounded-xl text-base transition-colors active:scale-95"
               >
                 <span>Schedule Booking</span>
                 <ArrowRight className="w-5 h-5" />

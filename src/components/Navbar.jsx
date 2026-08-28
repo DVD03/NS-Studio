@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800/80 transition-all duration-300">
       {/* Sleek top gold accent line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600" />
+      <div className="h-[2px] w-full bg-gradient-to-r from-amber-600 via-brand-primary to-amber-600" />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
@@ -35,7 +35,7 @@ export default function Navbar() {
                 className="h-8 sm:h-10 w-auto max-w-[100px] sm:max-w-[140px] object-contain transition-transform group-hover:scale-105"
               />
             ) : (
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-neutral-950 flex items-center justify-center font-bold shadow-md shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-brand-primary text-neutral-950 flex items-center justify-center font-bold shadow-md shrink-0">
                 <Camera className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
               </div>
             )}
@@ -43,7 +43,7 @@ export default function Navbar() {
               <span className="text-base sm:text-lg font-black tracking-wider text-white uppercase leading-none font-serif truncate">
                 NS STUDIO
               </span>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.15em] sm:tracking-[0.2em] text-amber-400 font-bold uppercase hidden sm:block mt-1 font-mono truncate">
+              <span className="text-[8px] sm:text-[9px] tracking-[0.15em] sm:tracking-[0.2em] text-brand-primary font-bold uppercase hidden sm:block mt-1 font-mono truncate">
                 PHOTOGRAPHY & FILMS • GAMPAHA
               </span>
             </div>
@@ -58,7 +58,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `relative px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-colors font-mono ${
                     isActive
-                      ? 'text-amber-400 font-bold'
+                      ? 'text-brand-primary font-bold'
                       : 'text-neutral-300 hover:text-white'
                   }`
                 }
@@ -67,7 +67,7 @@ export default function Navbar() {
                   <>
                     <span>{link.name}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-amber-400 rounded-full" />
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-primary rounded-full" />
                     )}
                   </>
                 )}
@@ -82,7 +82,7 @@ export default function Navbar() {
             {/* Subtle Admin Link */}
             <Link
               to="/admin"
-              className="p-2 rounded-xl text-neutral-500 hover:text-amber-400 hover:bg-neutral-900 transition-colors"
+              className="p-2 rounded-xl text-neutral-500 hover:text-brand-primary hover:bg-neutral-900 transition-colors"
               title="Admin Control Portal"
             >
               <ShieldCheck className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function Navbar() {
             {/* Book Session CTA */}
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-extrabold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-colors active:scale-95 shadow-sm font-mono"
+              className="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-extrabold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-colors active:scale-95 shadow-sm font-mono"
             >
               <span>Book Session</span>
               <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
@@ -125,7 +125,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `block px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-colors uppercase tracking-wider font-mono ${
                   isActive
-                    ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20 font-bold'
+                    ? 'text-brand-primary bg-brand-primary/10 border border-brand-primary/20 font-bold'
                     : 'text-neutral-300 hover:text-white hover:bg-neutral-900'
                 }`
               }
@@ -137,7 +137,7 @@ export default function Navbar() {
             <Link
               to="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold py-3 rounded-xl text-xs uppercase tracking-wider font-mono"
+              className="w-full flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-primary text-neutral-950 font-bold py-3 rounded-xl text-xs uppercase tracking-wider font-mono"
             >
               <span>Book Session</span>
               <ArrowRight className="w-4 h-4" />
@@ -145,7 +145,7 @@ export default function Navbar() {
             <Link
               to="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2 text-xs text-neutral-500 hover:text-amber-400 font-mono"
+              className="w-full text-center py-2 text-xs text-neutral-500 hover:text-brand-primary font-mono"
             >
               Admin Portal Login
             </Link>
