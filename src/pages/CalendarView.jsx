@@ -8,6 +8,7 @@ export default function CalendarView() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookedDates, setBookedDates] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedClash, setSelectedClash] = useState(null);
 
   // Fetch booked dates from backend API
   const fetchBookingsCalendar = async () => {
@@ -16,12 +17,12 @@ export default function CalendarView() {
       const res = await fetch(getApiUrl('/api/bookings'));
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
-        // Extract confirmed and pending dates
         const datesMap = json.data.map((b) => ({
           date: b.eventDate, // format YYYY-MM-DD
           status: b.status,
           eventType: b.eventType,
           clientName: b.name,
+          timeSlot: b.timeSlot,
         }));
         setBookedDates(datesMap);
       }
@@ -46,12 +47,10 @@ export default function CalendarView() {
 
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  // Calculate days for current month
   const firstDayOfMonth = new Date(year, month, 1);
   const lastDayOfMonth = new Date(year, month + 1, 0);
   const daysInMonth = lastDayOfMonth.getDate();
 
-  // Get starting day index (0 = Mon, 6 = Sun)
   let startingDay = firstDayOfMonth.getDay() - 1;
   if (startingDay < 0) startingDay = 6;
 
@@ -63,7 +62,6 @@ export default function CalendarView() {
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
-  // Helper to format date string YYYY-MM-DD
   const formatDateString = (d) => {
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -73,7 +71,6 @@ export default function CalendarView() {
 
   const todayStr = formatDateString(new Date());
 
-  // Function to get booking status for a given date
   const getDateBookingInfo = (dayNum) => {
     const checkDate = new Date(year, month, dayNum);
     const dateStr = formatDateString(checkDate);
@@ -82,8 +79,12 @@ export default function CalendarView() {
     return { dateStr, checkDate, booking };
   };
 
-  const handleSelectDate = (dateStr, isBooked) => {
-    if (isBooked) return;
+  const handleSelectDate = (dateStr, isBooked, booking) => {
+    if (isBooked) {
+      setSelectedClash(booking);
+      return;
+    }
+    setSelectedClash(null);
     navigate('/contact', { state: { prefilledDate: dateStr } });
   };
 
@@ -123,6 +124,30 @@ export default function CalendarView() {
             <span className="text-neutral-400">Past Date</span>
           </div>
         </div>
+
+        {/* Schedule Clash Notification Banner */}
+        {selectedClash && (
+          <div className="mt-6 bg-red-950/80 border-2 border-red-500 p-5 rounded-2xl text-left max-w-2xl mx-auto flex items-start gap-4 animate-fade-in shadow-2xl">
+            <XCircle className="w-6 h-6 text-red-400 shrink-0 mt-0.5" />
+            <div className="space-y-1 font-mono text-xs flex-grow">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-red-300 text-sm uppercase">Schedule Clash Warning</span>
+                <button
+                  onClick={() => setSelectedClash(null)}
+                  className="text-neutral-400 hover:text-white"
+                >
+                  <XCircle className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-red-200">
+                This date (<span className="font-bold">{selectedClash.date}</span>) is already reserved for a <strong>{selectedClash.eventType}</strong> event.
+              </p>
+              <p className="text-neutral-400">
+                Photographer Schedule Status: <span className="text-red-400 font-bold">Fully Booked ({selectedClash.timeSlot || '09:00 - 17:00'})</span>. Please select an open green date.
+              </p>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Calendar Card */}
@@ -191,7 +216,7 @@ export default function CalendarView() {
             return (
               <div
                 key={dayNum}
-                onClick={() => !isPast && handleSelectDate(dateStr, isBooked)}
+                onClick={() => !isPast && handleSelectDate(dateStr, isBooked, booking)}
                 className={`relative h-16 sm:h-28 p-1 sm:p-3 rounded-xl sm:rounded-2xl border transition-all flex flex-col justify-between ${
                   isPast
                     ? 'bg-neutral-950/50 border-neutral-900 text-neutral-600 opacity-60 cursor-not-allowed'

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CurrencyProvider } from './context/CurrencyContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -17,28 +18,30 @@ import Admin from './pages/Admin';
 
 export default function App() {
   return (
-    <CurrencyProvider>
-      <Router>
-        <ScrollToTop />
-        <ScrollProgress />
-        <CameraScrollIndicator />
-        <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 font-sans selection:bg-amber-500 selection:text-neutral-950">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/calendar" element={<CalendarView />} />
-              <Route path="/reviews" element={<Reviews />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </CurrencyProvider>
+    <ThemeProvider>
+      <CurrencyProvider>
+        <Router>
+          <ScrollToTop />
+          <ScrollProgress />
+          <CameraScrollIndicator />
+          <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 font-sans selection:bg-amber-500 selection:text-neutral-950">
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/calendar" element={<CalendarView />} />
+                <Route path="/reviews" element={<Reviews />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </CurrencyProvider>
+    </ThemeProvider>
   );
 }

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
+import invoiceRoutes from './routes/invoiceRoutes.js';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get('/api/health', (req, res) => {
 // Routes
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/invoices', invoiceRoutes);
 
 // Start Server
 app.listen(PORT, () => {

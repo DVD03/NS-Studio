@@ -9,8 +9,12 @@ let memoryBookings = [
     email: 'kasun.p@example.com',
     eventType: 'Wedding',
     eventDate: '2026-11-20',
+    timeSlot: '08:00 - 16:00',
     servicePackage: 'Wedding Film & Photo Classic',
     budget: 'LKR 375,000',
+    advancePaid: 100000,
+    balanceDue: 275000,
+    paymentStatus: 'Partially Paid',
     message: 'Looking for full day coverage in Gampaha. Ceremony starts at 9 AM.',
     status: 'Confirmed',
     createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
@@ -22,8 +26,12 @@ let memoryBookings = [
     email: 'shehan.ds@example.com',
     eventType: 'Commercial',
     eventDate: '2026-10-05',
+    timeSlot: '13:00 - 18:00',
     servicePackage: 'Ultimate Cinema & Drone Combo',
     budget: 'Above LKR 750,000',
+    advancePaid: 0,
+    balanceDue: 750000,
+    paymentStatus: 'Unpaid',
     message: 'Need dynamic tracking shots for luxury promotional video.',
     status: 'Pending',
     createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
@@ -33,13 +41,21 @@ let memoryBookings = [
 export const bookingService = {
   // Create new booking inquiry
   async createBooking(bookingData) {
+    const payload = {
+      timeSlot: bookingData.timeSlot || '09:00 - 17:00',
+      advancePaid: Number(bookingData.advancePaid) || 0,
+      balanceDue: Number(bookingData.balanceDue) || 0,
+      paymentStatus: bookingData.paymentStatus || 'Unpaid',
+      ...bookingData,
+    };
+
     if (getIsConnected()) {
-      const booking = new Booking(bookingData);
+      const booking = new Booking(payload);
       return await booking.save();
     }
     const newBooking = {
       _id: 'bk_' + Date.now(),
-      ...bookingData,
+      ...payload,
       status: 'Pending',
       createdAt: new Date().toISOString(),
     };
